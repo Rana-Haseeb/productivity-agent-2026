@@ -26,7 +26,7 @@ This project is built in disciplined phases. Current progress:
 | Phase | Scope | Status |
 |:--:|---|:--:|
 | 0 | Scaffold · config · dependency verification · tool-calling probe | ✅ Done |
-| 1 | Data layer — schema, Pydantic models, repository (Postgres + pgvector) | ⏸️ Blocked — pooler string |
+| 1 | Data layer — schema, Pydantic models, repository (Postgres + pgvector) | ✅ Done (live-verified) |
 | 2 | Tools — 8 required + 2 bonus (typed in/out schemas) | ⬜ Planned |
 | 3 | Provider-agnostic LLM service + error mapping | ⬜ Planned |
 | 4 | Agent core — LangGraph `StateGraph`, prompts, decision logic | ⬜ Planned |
