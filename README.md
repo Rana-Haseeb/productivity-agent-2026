@@ -31,7 +31,7 @@ This project is built in disciplined phases. Current progress:
 | 3 | Provider-agnostic LLM service + error mapping | ✅ Done (switching, model fallback, retry, choices:null guard) |
 | 4 | Agent core — LangGraph `StateGraph`, prompts, decision logic | ✅ Done (loop, memory, approval routing verified) |
 | 5 | Approval gate · session memory · execution logging | ✅ Done (real interrupt approve/reject, 12-field logs) |
-| 6 | Streamlit UI — chat, status, approval panel, log viewer | ⬜ Planned |
+| 6 | Streamlit UI — chat, status, approval panel, log viewer | ✅ Done (verified live in browser) |
 | 7 | Tests (≥10) · eval dataset (≥30) · experiments (≥5) | ⬜ Planned |
 | 8 | Documentation (design, architecture, tool spec, security, journal) | ⬜ Planned |
 | 9 | Deployment + demo video | ⬜ Planned |

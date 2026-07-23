@@ -1,0 +1,22 @@
+# Pin a fixed base theme so the deployed app renders identically to local.
+# Without this, Streamlit Cloud may pick a different base theme than your machine,
+# which makes widgets (selectboxes, inputs) look wrong. The in-app Dark/Light
+# toggle layers custom CSS on top of this base.
+
+[theme]
+base = "dark"
+primaryColor = "#7c5cff"
+backgroundColor = "#0e1117"
+secondaryBackgroundColor = "#1c2230"
+textColor = "#e6e9ef"
+font = "sans serif"
+
+[server]
+headless = true
+# Disable the module file-watcher. The RAG deps pull in `transformers`/`torch`,
+# and Streamlit's watcher stalls/crashes while scanning their many lazy modules
+# (the classic torch.classes / torchvision watcher error + very slow first load).
+# Turning it off makes startup fast and stable. Trade-off: no auto-reload on save
+# during local dev — restart to pick up code changes. (No effect on Cloud, which
+# redeploys on git push.)
+fileWatcherType = "none"

@@ -132,7 +132,23 @@ def approval_node(state: AgentState) -> dict[str, Any]:
     approved = bool(decision.get("approved")) if isinstance(decision, dict) else bool(decision)
 
     if approved:
-        return {"approval_decision": "approved", "pending_approval": None}
+        updates: dict[str, Any] = {"approval_decision": "approved", "pending_approval": None}
+        # Optional edit-before-approve: {"edited_args": {tool_call_id: {..new args..}}}.
+        edited = decision.get("edited_args") if isinstance(decision, dict) else None
+        if edited:
+            last = state.get("messages", [])[-1]
+            if getattr(last, "id", None) and getattr(last, "tool_calls", None):
+                new_calls = []
+                for tc in last.tool_calls:
+                    updated = dict(tc)
+                    if tc.get("id") in edited:
+                        updated["args"] = edited[tc["id"]]
+                    new_calls.append(updated)
+                # Same id => the add_messages reducer replaces the original AIMessage.
+                updates["messages"] = [
+                    AIMessage(id=last.id, content=last.content or "", tool_calls=new_calls)
+                ]
+        return updates
 
     reason = decision.get("reason") if isinstance(decision, dict) else None
     payload = {
