@@ -29,7 +29,7 @@ This project is built in disciplined phases. Current progress:
 | 1 | Data layer — schema, Pydantic models, repository (Postgres + pgvector) | ✅ Done (live-verified) |
 | 2 | Tools — 8 required + 2 bonus (typed in/out schemas) | ✅ Done (10 tools live-verified) |
 | 3 | Provider-agnostic LLM service + error mapping | ✅ Done (switching, model fallback, retry, choices:null guard) |
-| 4 | Agent core — LangGraph `StateGraph`, prompts, decision logic | ⬜ Planned |
+| 4 | Agent core — LangGraph `StateGraph`, prompts, decision logic | ✅ Done (loop, memory, approval routing verified) |
 | 5 | Approval gate · session memory · execution logging | ⬜ Planned |
 | 6 | Streamlit UI — chat, status, approval panel, log viewer | ⬜ Planned |
 | 7 | Tests (≥10) · eval dataset (≥30) · experiments (≥5) | ⬜ Planned |
