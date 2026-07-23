@@ -1,0 +1,24 @@
+# ---- Core ----
+python-dotenv>=1.0
+pydantic>=2.7
+
+# ---- Agent (LangGraph state machine + OpenAI-compatible chat models) ----
+langgraph>=0.2.60
+langchain-core>=0.3.25
+langchain-openai>=0.2.14
+
+# ---- Frontend ----
+# Pinned so Streamlit Cloud DOM matches local (stable CSS selectors for tests).
+streamlit==1.54.0
+
+# ---- Data layer: Postgres + pgvector ----
+psycopg[binary]>=3.2
+pgvector>=0.3.6
+
+# ---- Embeddings (semantic note search) ----
+# Pulls torch (~2GB) — see README "Known limitations" re: Streamlit Cloud build size.
+sentence-transformers>=3.0
+numpy>=1.26
+
+# ---- Testing ----
+pytest>=8.0

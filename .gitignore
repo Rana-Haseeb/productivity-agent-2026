@@ -1,0 +1,33 @@
+# Secrets — NEVER commit
+.env
+.env.*
+!.env.example
+
+# Handoff doc — contains API key + DB password in plaintext (§10)
+WEEK3_PROJECT_MEMORY.md
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# HF / model caches
+.cache/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local artifacts
+*.log
+scratch/

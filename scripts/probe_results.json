@@ -1,0 +1,66 @@
+[
+  {
+    "model": "cohere/north-mini-code:free",
+    "ok": true,
+    "reason": "OK",
+    "tool": "list_tasks",
+    "args": {
+      "priority": "Critical",
+      "status": "Pending"
+    },
+    "args_valid_json": true,
+    "priority_correct": true,
+    "ms": 3705
+  },
+  {
+    "model": "google/gemma-4-26b-a4b-it:free",
+    "ok": true,
+    "reason": "OK",
+    "tool": "list_tasks",
+    "args": {
+      "priority": "Critical",
+      "status": "Pending"
+    },
+    "args_valid_json": true,
+    "priority_correct": true,
+    "ms": 6847
+  },
+  {
+    "model": "google/gemma-4-31b-it:free",
+    "ok": false,
+    "reason": "HTTP 429: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"google/gemma-4-31b-it:free is temporarily rate-limited upstream. Please retry shortly, or add your own k",
+    "ms": 1921
+  },
+  {
+    "model": "nvidia/nemotron-3-nano-30b-a3b:free",
+    "ok": true,
+    "reason": "OK",
+    "tool": "list_tasks",
+    "args": {
+      "priority": "Critical",
+      "status": "Pending"
+    },
+    "args_valid_json": true,
+    "priority_correct": true,
+    "ms": 3035
+  },
+  {
+    "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+    "ok": true,
+    "reason": "OK",
+    "tool": "list_tasks",
+    "args": {
+      "priority": "Critical",
+      "status": "Pending"
+    },
+    "args_valid_json": true,
+    "priority_correct": true,
+    "ms": 5638
+  },
+  {
+    "model": "nvidia/nemotron-3-super-120b-a12b:free",
+    "ok": false,
+    "reason": "choices empty/null",
+    "ms": 1398
+  }
+]
