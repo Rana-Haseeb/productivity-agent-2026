@@ -141,7 +141,7 @@ class ExecutionLog(BaseModel):
     tool_results: list[dict] = Field(default_factory=list)
     approval_status: str | None = None
     errors: list[str] = Field(default_factory=list)
-    start_time: datetime = Field(default_factory=datetime.utcnow)
+    start_time: datetime = Field(default_factory=datetime.now)
     end_time: datetime | None = None
     duration_ms: int | None = None
     final_outcome: str | None = None

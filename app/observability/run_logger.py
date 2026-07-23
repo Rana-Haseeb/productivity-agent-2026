@@ -50,7 +50,7 @@ def build_execution_log(
     end_time: datetime | None = None,
 ) -> ExecutionLog:
     """Assemble (but do not persist) the ExecutionLog for a finished/paused run."""
-    end = end_time or datetime.utcnow()
+    end = end_time or datetime.now()
     trace = state.get("trace", [])
     return ExecutionLog(
         run_id=state.get("run_id"),

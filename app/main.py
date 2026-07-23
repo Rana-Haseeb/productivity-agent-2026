@@ -344,7 +344,7 @@ def main() -> None:
         # Process a queued new turn or an approval resume (status renders here, in-column).
         if ss.get("_pending_input"):
             ss.run_input = ss._pending_input
-            ss.run_start = datetime.utcnow()
+            ss.run_start = datetime.now()
             ss._pending_input = None
             process_turn(ss.run_input, is_resume=False)
             st.rerun()

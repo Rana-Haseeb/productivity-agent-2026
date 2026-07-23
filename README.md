@@ -32,7 +32,7 @@ This project is built in disciplined phases. Current progress:
 | 4 | Agent core — LangGraph `StateGraph`, prompts, decision logic | ✅ Done (loop, memory, approval routing verified) |
 | 5 | Approval gate · session memory · execution logging | ✅ Done (real interrupt approve/reject, 12-field logs) |
 | 6 | Streamlit UI — chat, status, approval panel, log viewer | ✅ Done (verified live in browser) |
-| 7 | Tests (≥10) · eval dataset (≥30) · experiments (≥5) | ⬜ Planned |
+| 7 | Tests (≥10) · eval dataset (≥30) · experiments (≥5) | ✅ Built — 34 tests pass; eval/experiment runs pending quota |
 | 8 | Documentation (design, architecture, tool spec, security, journal) | ⬜ Planned |
 | 9 | Deployment + demo video | ⬜ Planned |
 
@@ -254,6 +254,15 @@ streamlit run app/main.py
 
 ```bash
 pytest -q
+```
+34 tests, LLM mocked (fast, deterministic, no API key needed). The one real-DB persistence test
+skips automatically if `DATABASE_URL` is unset.
+
+**Evaluation (A5)** and **experiments (A6)** make live LLM calls:
+```bash
+python -m eval.run_eval                                          # 32-case eval (free model)
+python -m eval.run_eval --provider openai --model gpt-4o-mini    # graded run (recommended)
+python -m experiments.run_experiments                            # the 5 experiments
 ```
 
 ## 11. Example User Requests

@@ -1,0 +1,12 @@
+{
+  "n_cases": 2,
+  "tool_selection_accuracy_pct": 100,
+  "argument_accuracy_pct": null,
+  "task_completion_rate_pct": 100,
+  "approval_compliance_pct": null,
+  "invalid_action_rate_pct": 0,
+  "avg_response_time_ms": 25960,
+  "recovery_rate_pct": null,
+  "generated_at": "2026-07-23T16:29:50.242313",
+  "model": "openrouter:cohere/north-mini-code:free (+2 fallback)"
+}

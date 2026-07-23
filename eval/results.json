@@ -1,0 +1,46 @@
+[
+  {
+    "case": "D1",
+    "tools_called": [],
+    "primary_args": {},
+    "approval_requested": false,
+    "errored": false,
+    "duration_ms": 42859,
+    "eval": {
+      "id": "D1",
+      "category": "direct",
+      "tool_ok": true,
+      "arg_ok": null,
+      "approval_ok": true,
+      "approval_required": false,
+      "approval_requested": false,
+      "completed": true,
+      "recovered": null,
+      "invalid": false,
+      "duration_ms": 42859,
+      "tools_called": []
+    }
+  },
+  {
+    "case": "D2",
+    "tools_called": [],
+    "primary_args": {},
+    "approval_requested": false,
+    "errored": false,
+    "duration_ms": 9062,
+    "eval": {
+      "id": "D2",
+      "category": "direct",
+      "tool_ok": true,
+      "arg_ok": null,
+      "approval_ok": true,
+      "approval_required": false,
+      "approval_requested": false,
+      "completed": true,
+      "recovered": null,
+      "invalid": false,
+      "duration_ms": 9062,
+      "tools_called": []
+    }
+  }
+]
