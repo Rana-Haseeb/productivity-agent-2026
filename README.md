@@ -33,7 +33,7 @@ This project is built in disciplined phases. Current progress:
 | 5 | Approval gate · session memory · execution logging | ✅ Done (real interrupt approve/reject, 12-field logs) |
 | 6 | Streamlit UI — chat, status, approval panel, log viewer | ✅ Done (verified live in browser) |
 | 7 | Tests (≥10) · eval dataset (≥30) · experiments (≥5) | ✅ Built — 34 tests pass; eval/experiment runs pending quota |
-| 8 | Documentation (design, architecture, tool spec, security, journal) | ⬜ Planned |
+| 8 | Documentation (design, architecture, tool spec, security, journal) | ✅ Done (A2–A8 + README) |
 | 9 | Deployment + demo video | ⬜ Planned |
 
 > Sections below marked **_Planned_** describe intended behaviour; **_Measured_** results appear only
@@ -140,7 +140,7 @@ flowchart TD
 ```
 
 A full written explanation of each component lives in
-[`docs/A3_architecture.md`](docs/A3_architecture.md) *(Planned — Phase 8)*.
+[`docs/A3_architecture.md`](docs/A3_architecture.md).
 
 ### 🔀 Multi-Step Workflows
 
@@ -173,7 +173,7 @@ Documented limits and *why* they were chosen:
 
 ## 5. Tool Catalogue
 
-> Full input/output schemas, error tables, and examples: [`docs/A4_tool_specification.md`](docs/A4_tool_specification.md) *(Planned — Phase 8)*.
+> Full input/output schemas, error tables, and examples: [`docs/A4_tool_specification.md`](docs/A4_tool_specification.md).
 
 **Core tools (8):**
 
@@ -278,7 +278,7 @@ python -m experiments.run_experiments                            # the 5 experim
 
 ## 12. Evaluation Results
 
-_Planned — Phase 7._ The agent is evaluated against a **≥30-case dataset** (direct-response,
+The agent is evaluated against a **32-case dataset** ([`docs/A5_evaluation.md`](docs/A5_evaluation.md)) (direct-response,
 single-tool, multi-tool, approval, and failure/edge cases). Targets:
 
 | Metric | Target | Measured |
@@ -324,7 +324,7 @@ _Planned — Phase 9 (Streamlit Community Cloud)._
 ## 🔐 Security Highlights
 
 Full review (≥5 risks + controls) in [`docs/A7_security_review.md`](docs/A7_security_review.md)
-*(Planned — Phase 8)*. Baked-in from day one:
+(full analysis in [`docs/A7_security_review.md`](docs/A7_security_review.md)). Baked-in from day one:
 
 - **Secrets** live only in a git-ignored `.env`; nothing sensitive is hard-coded or logged.
 - **Approval boundary** prevents the model from executing writes unilaterally.
