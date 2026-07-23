@@ -20,6 +20,15 @@ from datetime import datetime
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import streamlit as st
+
+# On Streamlit Community Cloud, secrets arrive via st.secrets (not env vars). Bridge them into the
+# environment BEFORE app.config is imported, so the same os.getenv-based config works everywhere.
+try:
+    for _k, _v in st.secrets.items():
+        os.environ.setdefault(_k, str(_v))
+except Exception:  # noqa: BLE001 — no secrets file locally; .env is used instead
+    pass
+
 from langchain_core.messages import AIMessage, HumanMessage, ToolMessage
 from langgraph.types import Command
 

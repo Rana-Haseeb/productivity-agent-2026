@@ -34,7 +34,7 @@ This project is built in disciplined phases. Current progress:
 | 6 | Streamlit UI — chat, status, approval panel, log viewer | ✅ Done (verified live in browser) |
 | 7 | Tests (≥10) · eval dataset (≥30) · experiments (≥5) | ✅ Built — 34 tests pass; eval/experiment runs pending quota |
 | 8 | Documentation (design, architecture, tool spec, security, journal) | ✅ Done (A2–A8 + README) |
-| 9 | Deployment + demo video | ⬜ Planned |
+| 9 | Deployment + demo video | 🔨 Deploy-ready (see DEPLOYMENT.md); demo video skipped by choice |
 
 > Sections below marked **_Planned_** describe intended behaviour; **_Measured_** results appear only
 > once the evaluation in Phase 7 has actually run. No invented numbers.
@@ -300,7 +300,8 @@ _Planned — Phase 6/9. See [`screenshots/`](screenshots/)._
 _Planned — Phase 9 (10–12 min walkthrough of a running app)._
 
 ## 15. Deployment Link
-_Planned — Phase 9 (Streamlit Community Cloud)._
+Deploy-ready for Streamlit Community Cloud — step-by-step guide in [DEPLOYMENT.md](DEPLOYMENT.md).
+_(Live URL to be added after deploy.)_
 
 ## 16. Known Limitations
 

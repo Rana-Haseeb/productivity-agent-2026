@@ -183,7 +183,10 @@ class Repository:
 
     # -------------------------------------------------------------- notes
     def save_note(self, data: NoteCreate) -> Note:
-        vector = embed(f"{data.title}\n{data.content}")
+        try:
+            vector = embed(f"{data.title}\n{data.content}")
+        except Exception:  # noqa: BLE001 — embeddings unavailable (e.g. torch not installed) → store NULL
+            vector = None
         row = self._one(
             """
             insert into notes (title, content, category, tags, embedding)
@@ -203,7 +206,10 @@ class Repository:
         date_to: date | None = None,
     ) -> list[NoteMatch]:
         """Cosine-similarity search over note embeddings, newest ties first."""
-        qvec = embed(query)
+        try:
+            qvec = embed(query)
+        except Exception:  # noqa: BLE001 — embeddings unavailable → degrade to keyword search
+            return self.search_notes_keyword(query, k)
         where, params = ["embedding is not null"], []
         if category:
             where.append("category = %s")
