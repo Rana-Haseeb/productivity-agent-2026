@@ -22,6 +22,7 @@ from __future__ import annotations
 
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END, START, StateGraph
+from langgraph.types import Command
 
 from app.agent.nodes import (
     APPROVAL,
@@ -32,6 +33,7 @@ from app.agent.nodes import (
     make_tools_node,
     max_steps_node,
     route_after_agent,
+    route_after_approval,
 )
 from app.agent.state import AgentState, initial_state, turn_update
 from app.config import settings
@@ -55,7 +57,7 @@ def build_agent(repo, llm, checkpointer=None):
         {TOOLS: TOOLS, APPROVAL: APPROVAL, MAX_STEPS: MAX_STEPS, END: END},
     )
     graph.add_edge(TOOLS, "agent")
-    graph.add_edge(APPROVAL, END)   # Phase 4 stub: stop at the approval gate
+    graph.add_conditional_edges(APPROVAL, route_after_approval, {TOOLS: TOOLS, END: END})
     graph.add_edge(MAX_STEPS, END)
 
     return graph.compile(checkpointer=checkpointer or MemorySaver())
@@ -73,3 +75,23 @@ def run_turn(graph, user_text: str, thread_id: str = "default", run_id: str | No
     thread_exists = bool(graph.get_state(config).values)
     update = turn_update(user_text, run_id) if thread_exists else initial_state(user_text, run_id)
     return graph.invoke(update, config=config)
+
+
+def resume_turn(graph, decision, thread_id: str = "default"):
+    """Resume a paused run with the approval decision, e.g. ``{"approved": True}``."""
+    config = {
+        "configurable": {"thread_id": thread_id},
+        "recursion_limit": settings.max_steps * 2 + 2,
+    }
+    return graph.invoke(Command(resume=decision), config=config)
+
+
+def get_pending_interrupt(graph, thread_id: str = "default"):
+    """Return the approval-request payload if the run is paused at the gate, else None."""
+    snapshot = graph.get_state({"configurable": {"thread_id": thread_id}})
+    if getattr(snapshot, "next", None):
+        for task in getattr(snapshot, "tasks", []):
+            interrupts = getattr(task, "interrupts", None)
+            if interrupts:
+                return interrupts[0].value
+    return None

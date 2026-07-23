@@ -20,6 +20,7 @@ from typing import Any
 
 from langchain_core.messages import AIMessage, SystemMessage, ToolMessage
 from langgraph.graph import END
+from langgraph.types import interrupt
 
 from app.agent.prompts import build_system
 from app.agent.state import AgentState
@@ -93,27 +94,76 @@ def route_after_agent(state: AgentState):
 
 
 # ------------------------------------------------------------------ approval
+_EFFECTS = {
+    "create_task": "Create a new task in your task list.",
+    "update_task": "Modify fields of an existing task.",
+    "complete_task": "Mark a task as Completed (changes stored status).",
+    "save_note": "Save a new note to your notes.",
+    "draft_follow_up_email": "Produce an email draft (send is simulated).",
+}
+
+
+def _describe_effect(name: str) -> str:
+    return _EFFECTS.get(name, "Perform a write action.")
+
+
 def approval_node(state: AgentState) -> dict[str, Any]:
-    """Phase 4 STUB — record the pending write(s) and stop before executing anything."""
+    """Real human-in-the-loop gate: pause via interrupt(), resume with the caller's decision.
+
+    Runs to ``interrupt()`` and pauses; the graph stays checkpointed until the caller resumes with
+    ``{"approved": bool, "reason"?: str}``. Approve → route to tools (executes). Reject → append
+    rejection tool-messages and end, executing nothing.
+    """
     last = state.get("messages", [])[-1]
+    calls = getattr(last, "tool_calls", []) or []
     pending = [
-        {"tool": tc["name"], "args": tc.get("args", {}), "id": tc.get("id")}
-        for tc in getattr(last, "tool_calls", [])
+        {
+            "tool": tc["name"],
+            "args": tc.get("args", {}),
+            "id": tc.get("id"),
+            "expected_effect": _describe_effect(tc["name"]),
+        }
+        for tc in calls
         if _needs_approval(tc)
     ]
-    names = ", ".join(p["tool"] for p in pending) or "an action"
-    note = AIMessage(
-        content=(
-            f"[Approval required] The following needs your approval before it runs: {names}. "
-            "(In Phase 4 the flow pauses here without executing; Phase 5 wires this to a real "
-            "interrupt with Approve/Reject.)"
+
+    # PAUSE. On resume, `decision` is whatever the caller passed to Command(resume=...).
+    decision = interrupt({"type": "approval_request", "calls": pending})
+    approved = bool(decision.get("approved")) if isinstance(decision, dict) else bool(decision)
+
+    if approved:
+        return {"approval_decision": "approved", "pending_approval": None}
+
+    reason = decision.get("reason") if isinstance(decision, dict) else None
+    payload = {
+        "status": "rejected",
+        "message": "User rejected this action; nothing was executed."
+        + (f" Reason: {reason}" if reason else ""),
+    }
+    rejection = [
+        ToolMessage(
+            content=json.dumps(payload),
+            tool_call_id=(tc.get("id") or str(uuid.uuid4())),
+            name=tc["name"],
         )
+        for tc in calls
+    ]
+    # A clean closing line so the UI shows a human sentence, not raw rejection JSON.
+    closing = AIMessage(
+        content="Okay — I won't proceed with that action, and nothing was changed."
+        + (f" ({reason})" if reason else " Let me know if you'd like something else.")
     )
     return {
-        "pending_approval": {"calls": pending},
-        "messages": [note],
-        "final_outcome": "awaiting_approval",
+        "approval_decision": "rejected",
+        "pending_approval": None,
+        "messages": rejection + [closing],
+        "final_outcome": "rejected",
     }
+
+
+def route_after_approval(state: AgentState):
+    """Approved → execute the tool calls; rejected → return control to the user."""
+    return TOOLS if state.get("approval_decision") == "approved" else END
 
 
 # ----------------------------------------------------------------- max steps
@@ -174,7 +224,7 @@ def make_tools_node(ctx: ToolContext):
                 payload = result.model_dump(mode="json") if hasattr(result, "model_dump") else result
                 content = json.dumps(payload, default=str)
                 executed[sig] = content
-                trace.append({"tool": name, "args": args, "ok": True})
+                trace.append({"tool": name, "args": args, "ok": True, "result": payload})
                 if name == "list_tasks" and isinstance(payload, dict):
                     referenced = payload.get("tasks", referenced)  # session memory
             except (ToolValidationError, ToolError) as e:

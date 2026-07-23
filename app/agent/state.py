@@ -28,6 +28,8 @@ class AgentState(TypedDict, total=False):
     preferences: dict[str, Any]
     # A write awaiting approval; set by the approval gate (Phase 5 pause point).
     pending_approval: dict[str, Any] | None
+    # Result of the most recent approval gate: "approved" | "rejected" (routes approval -> tools/END).
+    approval_decision: str | None
     # Executed (tool, args) signatures -> serialized result, for duplicate/loop detection.
     executed: dict[str, Any]
     # Number of agent (LLM) steps taken this run — enforces the max-step limit.
